@@ -21,10 +21,17 @@ public class Main {
             @Override
             public void run() {
                 System.out.println(ANSI_RED + "Hello from the anonymous class's implementation of run()");
+                try {
+                    anotherThread.join(); // waiting anotherThread finishes, anotherThread is sleeping for 3 sec, if the joint is waiting only 2 sec anotherThread.join(2000), the println below will be executed before anotherThread finishes.
+                    System.out.println(ANSI_RED + "AnotherThread terminated, or timed out, so I'm running again");
+                } catch (InterruptedException e) {
+                    System.out.println(ANSI_RED + "I couldn't wait after all. I was interrupted");
+                }
             }
         });
 
         myRunnableThread.start();
+        //anotherThread.interrupt(); // Execution of the catch block.
 
         System.out.println(ANSI_PURPLE + "Hello again from the main thread.");
     }
